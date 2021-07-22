@@ -55,5 +55,8 @@
       "**/@graphprotocol/graph-ts",
       "**/@graphprotocol/graph-ts/**"
     ]
+  },
+  "dependencies": {
+    "@sushiswap/sdk": "^5.0.0-canary.23"
   }
 }
