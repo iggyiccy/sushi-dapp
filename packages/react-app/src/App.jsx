@@ -124,7 +124,10 @@ function App(props) {
 
         <Menu style={{ textAlign:"center" }} selectedKeys={[route]} mode="horizontal">
           <Menu.Item key="/">
-            <Link onClick={()=>{setRoute("/")}} to="/">Swap</Link>
+            <Link onClick={()=>{setRoute("/")}} to="/">Sushiswap</Link>
+          </Menu.Item>
+          <Menu.Item key="/">
+            <Link onClick={()=>{setRoute("/uniswap")}} to="/">Uniswap</Link>
           </Menu.Item>
           <Menu.Item key="/hints">
             <Link onClick={()=>{setRoute("/hints")}} to="/hints">Hints</Link>
@@ -136,7 +139,17 @@ function App(props) {
         </Modal>
 
         <Switch>
+        {/* 🍣 Sushiswap start here */}
         <Route exact path="/">
+          <Row justify="center">
+          <Swap
+            selectedProvider={userProvider}
+            tokenListURI={tokenListURI}
+            />
+          </Row>
+        </Route>
+        {/* 🦄 Uniswap start here */}
+        <Route path="/uniswap">
           <Row justify="center">
           <Swap
             selectedProvider={userProvider}
