@@ -9,7 +9,7 @@ import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
 import { useExchangePrice, useGasPrice, useUserProvider, useContractLoader, useContractReader, useEventListener, useBalance, useExternalContractLoader } from "./hooks";
-import { Header, Account, Faucet, Ramp, Contract, GasGauge, Swap } from "./components";
+import { Header, Account, Faucet, Ramp, Contract, GasGauge, Swap, Sushiswap } from "./components";
 import { Transactor } from "./helpers";
 import { formatEther, parseEther } from "@ethersproject/units";
 //import Hints from "./Hints";
@@ -110,7 +110,7 @@ function App(props) {
     setRoute(window.location.pathname)
   }, [setRoute]);
 
-  const [tokenListURI, setTokenListURI] = useState('https://gateway.ipfs.io/ipns/tokens.uniswap.org')
+  const [tokenListURI, setTokenListURI] = useState('@sushiswap/default-token-list/build/sushiswap-default.tokenlist.json')
 
   let onLocalChain = localProvider && localProvider.connection && localProvider.connection.url && localProvider.connection.url.indexOf("localhost")>=0 && !process.env.REACT_APP_PROVIDER
 
@@ -124,10 +124,10 @@ function App(props) {
 
         <Menu style={{ textAlign:"center" }} selectedKeys={[route]} mode="horizontal">
           <Menu.Item key="/">
-            <Link onClick={()=>{setRoute("/")}} to="/">Sushiswap</Link>
+            <Link onClick={()=>{setRoute("/")}} to="/">Swap</Link>
           </Menu.Item>
           <Menu.Item key="/">
-            <Link onClick={()=>{setRoute("/uniswap")}} to="/">Uniswap</Link>
+            <Link onClick={()=>{setRoute("/sushiswap")}} to="/">Sushiswap</Link>
           </Menu.Item>
           <Menu.Item key="/hints">
             <Link onClick={()=>{setRoute("/hints")}} to="/hints">Hints</Link>
@@ -139,7 +139,6 @@ function App(props) {
         </Modal>
 
         <Switch>
-        {/* 🍣 Sushiswap start here */}
         <Route exact path="/">
           <Row justify="center">
           <Swap
@@ -148,15 +147,14 @@ function App(props) {
             />
           </Row>
         </Route>
-        {/* 🦄 Uniswap start here */}
-        <Route path="/uniswap">
-          <Row justify="center">
-          <Swap
-            selectedProvider={userProvider}
-            tokenListURI={tokenListURI}
-            />
-          </Row>
-        </Route>
+          <Route path="/sushiswap">
+            <Row justify="center">
+            <Sushiswap
+              selectedProvider={userProvider}
+              tokenListURI={tokenListURI}
+              />
+            </Row>
+          </Route>
           <Route path="/hints">
             <Title level={3}>Using the Uniswapper</Title>
             <Paragraph><Text code>{`<Swap/>`}</Text> is a minimal Uniswap interface, requiring an <a href="https://docs.ethers.io/v5/" target="_blank">ethers.js</a> Provider.</Paragraph>
