@@ -47,7 +47,7 @@ Iggy's Notes:
 
 Reference - https://azfuller20.medium.com/swap-with-uniswap-wip-f15923349b3d
 
-1. replaced package.json API key to https://eth-mainnet.alchemyapi.io/v2/vg7tyY9uGGpeIl_up8QU1Sq2f7GvtlQW 
+1. replaced package.json API key
 2. yarn add @sushiswap/sdk
 3. copy swap.jsx as sushiswap.jsx
 4. change route address to 0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F
