@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Space, Row, InputNumber, Card, notification, Select, Descriptions, Typography, Button, Divider, Tooltip, Drawer, Modal } from "antd";
 import { SettingOutlined, RetweetOutlined } from '@ant-design/icons';
-import { ChainId, Token, WETH, Fetcher, Trade, TokenAmount, Percent } from '@sushiswap/sdk'
+import { ChainId, Token, WETH9, Pair, Trade, CurrencyAmount, Percent } from '@sushiswap/sdk'
 import { parseUnits, formatUnits } from "@ethersproject/units";
 import { ethers } from "ethers";
 import { useBlockNumber, usePoller } from "eth-hooks";
-import { IUniswapV2Router02 as IUniswapV2Router02ABI } from '@sushiswap/core/abi/IUniswapV2Router02.json'
 
 
 const { Option } = Select;
@@ -72,6 +71,8 @@ function Sushiswap({ selectedProvider, tokenListURI }) {
 
   const [invertPrice, setInvertPrice] = useState(false)
 
+  const IUniswapV2Router02ABI = require('@sushiswap/core/abi/IUniswapV2Router02.json');
+
   let blockNumber = useBlockNumber(selectedProvider, 3000)
 
   let signer = selectedProvider.getSigner()
@@ -88,7 +89,7 @@ function Sushiswap({ selectedProvider, tokenListURI }) {
       let filteredTokens = tokenListJson.tokens.filter(function (t) {
         return t.chainId === ChainId.MAINNET
       })
-      let ethToken = WETH[ChainId.MAINNET]
+      let ethToken = WETH9[ChainId.MAINNET]
       ethToken.name = 'Ethereum'
       ethToken.symbol = 'ETH'
       ethToken.logoURI = "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
@@ -118,7 +119,7 @@ function Sushiswap({ selectedProvider, tokenListURI }) {
 
     const getPairs = async (list) => {
 
-      let listOfPromises = list.map(item => Fetcher.fetchPairData(item[0], item[1], selectedProvider))
+      let listOfPromises = list.map(item => Pair(item[0], item[1], selectedProvider))
       return Promise.all(listOfPromises.map(p => p.catch(() => undefined)));
     }
 
@@ -130,7 +131,7 @@ function Sushiswap({ selectedProvider, tokenListURI }) {
       setAmountInMax()
       bestTrade = Trade.bestTradeExactIn(
       listOfPairs.filter(item => item),
-      new TokenAmount(tokens[tokenIn], parseUnits(amountIn.toString(), tokens[tokenIn].decimals)),
+      new CurrencyAmount.fromRawAmount(tokens[tokenIn], parseUnits(amountIn.toString(), tokens[tokenIn].decimals)),
       tokens[tokenOut])
       if(bestTrade[0]) {
         setAmountOut(bestTrade[0].outputAmount.toSignificant(6))
@@ -140,7 +141,7 @@ function Sushiswap({ selectedProvider, tokenListURI }) {
       bestTrade = Trade.bestTradeExactOut(
       listOfPairs.filter(item => item),
       tokens[tokenIn],
-      new TokenAmount(tokens[tokenOut], parseUnits(amountOut.toString(), tokens[tokenOut].decimals)))
+      new CurrencyAmount.fromRawAmount(tokens[tokenOut], parseUnits(amountOut.toString(), tokens[tokenOut].decimals)))
       if(bestTrade[0]) {
         setAmountIn(bestTrade[0].inputAmount.toSignificant(6))
       } else { setAmountIn() }
