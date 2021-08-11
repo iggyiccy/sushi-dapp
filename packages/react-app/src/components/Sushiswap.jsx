@@ -102,6 +102,7 @@ function Sushiswap({ selectedProvider, tokenListURI }) {
     }
     }
     getTokenList()
+// eslint-disable-next-line
   },[tokenListURI])
 
   const getTrades = async () => {
@@ -119,7 +120,7 @@ function Sushiswap({ selectedProvider, tokenListURI }) {
 
     const getPairs = async (list) => {
 
-      let listOfPromises = list.map(item => Pair(item[0], item[1], selectedProvider))
+      let listOfPromises = list.map(item => Pair.getAddress(item[0], item[1]))
       return Promise.all(listOfPromises.map(p => p.catch(() => undefined)));
     }
 
@@ -156,6 +157,7 @@ function Sushiswap({ selectedProvider, tokenListURI }) {
 
   useEffect(() => {
       getTrades()
+  // eslint-disable-next-line
   },[tokenIn, tokenOut, amountIn, amountOut, slippageTolerance, selectedProvider])
 
   useEffect(() => {
@@ -166,6 +168,7 @@ function Sushiswap({ selectedProvider, tokenListURI }) {
         setAmountInMax(trades[0].maximumAmountIn(slippageTolerance))
       }
     }
+  // eslint-disable-next-line
   }, [slippageTolerance, amountIn, amountOut, trades])
 
   const getBalance = async (_token, _account, _contract) => {
@@ -376,7 +379,7 @@ function Sushiswap({ selectedProvider, tokenListURI }) {
   )
 
   return (
-    <Card title={<Space><img src="https://sushi.com/static/media/logo.dec926df.png" width='40' alt='sushiswapLogo'/><Typography>Sushiswapper</Typography></Space>} extra={<Button type="text" onClick={() => {setSettingsVisible(true)}}><SettingOutlined /></Button>}>
+    <Card title={<Space><img src="https://raw.githubusercontent.com/sushiswap/art/master/sushi/logo-256x256.png" width='40' alt='sushiswapLogo'/><Typography>Sushiswapper</Typography></Space>} extra={<Button type="text" onClick={() => {setSettingsVisible(true)}}><SettingOutlined /></Button>}>
     <Space direction="vertical">
     <Row justify="center" align="middle">
     <Card size="small" type="inner" title={`From${exact==='out' && tokenIn && tokenOut?' (estimate)':''}`} extra={<><img src={logoIn} alt={logoIn} width='30'/><Button type="link" onClick={() => {

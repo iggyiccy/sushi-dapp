@@ -100,6 +100,7 @@ function Swap({ selectedProvider, tokenListURI }) {
     }
     }
     getTokenList()
+// eslint-disable-next-line
   },[tokenListURI])
 
   const getTrades = async () => {
@@ -154,6 +155,7 @@ function Swap({ selectedProvider, tokenListURI }) {
 
   useEffect(() => {
       getTrades()
+// eslint-disable-next-line
   },[tokenIn, tokenOut, amountIn, amountOut, slippageTolerance, selectedProvider])
 
   useEffect(() => {
@@ -164,6 +166,7 @@ function Swap({ selectedProvider, tokenListURI }) {
         setAmountInMax(trades[0].maximumAmountIn(slippageTolerance))
       }
     }
+  // eslint-disable-next-line
   }, [slippageTolerance, amountIn, amountOut, trades])
 
   const getBalance = async (_token, _account, _contract) => {

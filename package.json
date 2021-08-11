@@ -57,6 +57,7 @@
     ]
   },
   "dependencies": {
+    "@sushiswap/default-token-list": "^13.0.0",
     "@sushiswap/sdk": "^5.0.0-canary.23"
   }
 }

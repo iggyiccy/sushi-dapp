@@ -2375,6 +2375,30 @@
   resolved "https://registry.yarnpkg.com/@solidity-parser/parser/-/parser-0.11.1.tgz#fa840af64840c930f24a9c82c08d4a092a068add"
   integrity sha512-H8BSBoKE8EubJa0ONqecA2TviT3TnHeC4NpgnAHSUiuhZoQBfPB4L2P9bs8R6AoTW10Endvh3vc+fomVMIDIYQ==
 
+"@sushiswap/core@^2.0.0-canary.0":
+  version "2.0.0-canary.1"
+  resolved "https://registry.yarnpkg.com/@sushiswap/core/-/core-2.0.0-canary.1.tgz#91c938668282d463e4fce6e0cf4d320ce5f3768f"
+  integrity sha512-6YFT4EKgm0XgfwCBsKx5HrDtRI6EvhZHipjBKegdTV0b2zKuXnmdyZ+RwPCr0mCKq2pKB0qIiqCxfbgXYDlLCQ==
+
+"@sushiswap/default-token-list@^13.0.0":
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/@sushiswap/default-token-list/-/default-token-list-13.0.0.tgz#5c017ac7af4d27624b95dd16928e4edf4d1ab1d5"
+  integrity sha512-6TYR5AFn2Gu4DFkhJ6JlQLc3w8LtWLaYn1FKxgTNmGmCqZ00gPWrrPbV8MRQIO++M/sKyov0mQrpuzmHLpikIg==
+
+"@sushiswap/sdk@^5.0.0-canary.23":
+  version "5.0.0-canary.33"
+  resolved "https://registry.yarnpkg.com/@sushiswap/sdk/-/sdk-5.0.0-canary.33.tgz#dcc3222070eacef26381775231359bf347a4e4c5"
+  integrity sha512-0pPjUUm5loSaTZCapFwzocUSpJ01WPjyKCb82S0Ay/K+ud4GuVVUKyC2qxiWBIhkmzNGOGXS1W2bL2gnap+xUg==
+  dependencies:
+    "@sushiswap/core" "^2.0.0-canary.0"
+    big.js "^5.2.2"
+    decimal.js-light "^2.5.0"
+    jsbi "^3.1.1"
+    lowdash "^1.2.0"
+    tiny-invariant "^1.1.0"
+    tiny-warning "^1.0.3"
+    toformat "^2.0.0"
+
 "@svgr/babel-plugin-add-jsx-attribute@^4.2.0":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-4.2.0.tgz#dadcb6218503532d6884b210e7f3c502caaa44b1"
@@ -12401,6 +12425,11 @@ loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.2.0, loose-envify@^1.3
   integrity sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
+
+lowdash@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/lowdash/-/lowdash-1.2.0.tgz#d807b966da490ce449324a066b61dd2ff31089fa"
+  integrity sha512-oHdShh4q1SmsUkLBa9ITyi4x3ObxUxFeGNu7GCGta8b9jq0IAmZ/Zeapd/Ex7/OuA8tN96izhRdQlUcMe40Ing==
 
 lower-case@^2.0.1:
   version "2.0.1"
