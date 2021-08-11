@@ -5,6 +5,8 @@ import { ChainId, Token, WETH9, Pair, Trade, CurrencyAmount, Percent } from '@su
 import { parseUnits, formatUnits } from "@ethersproject/units";
 import { ethers } from "ethers";
 import { useBlockNumber, usePoller } from "eth-hooks";
+import * as IUniswapV2Router02ABI from '@sushiswap/core/abi/IUniswapV2Router02.json';
+import Fetcher from './Fetcher'
 
 
 const { Option } = Select;
@@ -71,8 +73,6 @@ function Sushiswap({ selectedProvider, tokenListURI }) {
 
   const [invertPrice, setInvertPrice] = useState(false)
 
-  const IUniswapV2Router02ABI = require('@sushiswap/core/abi/IUniswapV2Router02.json');
-
   let blockNumber = useBlockNumber(selectedProvider, 3000)
 
   let signer = selectedProvider.getSigner()
@@ -120,7 +120,7 @@ function Sushiswap({ selectedProvider, tokenListURI }) {
 
     const getPairs = async (list) => {
 
-      let listOfPromises = list.map(item => Pair.getAddress(item[0], item[1]))
+      let listOfPromises = list.map(item => Fetcher.fetchPairData(item[0], item[1], selectedProvider))
       return Promise.all(listOfPromises.map(p => p.catch(() => undefined)));
     }
 
