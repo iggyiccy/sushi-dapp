@@ -8,9 +8,9 @@ import { useBlockNumber, usePoller } from "eth-hooks";
 import { abi as ABI } from './ABI.json';
 // import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 import fetchPairData from './Fetcher';
-import TokenAmount from './TokenAmount';
+import { TokenAmount } from './TokenAmount';
 import DEFAULT_TOKEN_LIST from '@sushiswap/default-token-list'
-import {WETH} from '@uniswap/sdk'
+import { WETH } from '@uniswap/sdk'
 
 const { Option } = Select;
 const { Text } = Typography;
