@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Space, Row, InputNumber, Card, notification, Select, Descriptions, Typography, Button, Divider, Tooltip, Drawer, Modal } from "antd";
 import { SettingOutlined, RetweetOutlined } from '@ant-design/icons';
-import { ChainId, Token, WETH9, Trade, Percent } from '@sushiswap/sdk'
+import { ChainId, Token, Trade, Percent } from '@sushiswap/sdk'
 import { parseUnits, formatUnits } from "@ethersproject/units";
 import { ethers } from "ethers";
 import { useBlockNumber, usePoller } from "eth-hooks";
@@ -9,7 +9,8 @@ import { abi as ABI } from './ABI.json';
 // import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 import fetchPairData from './Fetcher';
 import TokenAmount from './TokenAmount';
-
+import DEFAULT_TOKEN_LIST from '@sushiswap/default-token-list'
+import {WETH} from '@uniswap/sdk'
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -80,18 +81,16 @@ function Sushiswap({ selectedProvider, tokenListURI }) {
   let signer = selectedProvider.getSigner()
   let routerContract = new ethers.Contract(ROUTER_ADDRESS, ABI, signer);
 
-  let _tokenListUri = tokenListURI ? tokenListURI : '@sushiswap/default-token-list/build/sushiswap-default.tokenlist.json'
+  let _tokenListUri = DEFAULT_TOKEN_LIST
 
   useEffect(() => {
     const getTokenList = async () => {
       console.log(_tokenListUri)
       try {
-      let tokenList = await fetch(_tokenListUri)
-      let tokenListJson = await tokenList.json()
-      let filteredTokens = tokenListJson.tokens.filter(function (t) {
+      let filteredTokens = _tokenListUri.tokens.filter(function (t) {
         return t.chainId === ChainId.MAINNET
       })
-      let ethToken = WETH9[ChainId.MAINNET]
+      let ethToken = WETH[ChainId.MAINNET]
       ethToken.name = 'Ethereum'
       ethToken.symbol = 'ETH'
       ethToken.logoURI = "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
