@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Space, Row, InputNumber, Card, notification, Select, Descriptions, Typography, Button, Divider, Tooltip, Drawer, Modal } from "antd";
 import { SettingOutlined, RetweetOutlined } from '@ant-design/icons';
-import { ChainId, Token, WETH9, Pair, Trade, CurrencyAmount, Percent } from '@sushiswap/sdk'
+import { ChainId, Token, WETH9, Trade, Percent } from '@sushiswap/sdk'
 import { parseUnits, formatUnits } from "@ethersproject/units";
 import { ethers } from "ethers";
 import { useBlockNumber, usePoller } from "eth-hooks";
-import * as IUniswapV2Router02ABI from '@sushiswap/core/abi/IUniswapV2Router02.json';
-import Fetcher from './Fetcher'
+import { abi as ABI } from './ABI.json';
+// import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
+import fetchPairData from './Fetcher';
+import TokenAmount from './TokenAmount';
 
 
 const { Option } = Select;
@@ -76,7 +78,7 @@ function Sushiswap({ selectedProvider, tokenListURI }) {
   let blockNumber = useBlockNumber(selectedProvider, 3000)
 
   let signer = selectedProvider.getSigner()
-  let routerContract = new ethers.Contract(ROUTER_ADDRESS, IUniswapV2Router02ABI, signer);
+  let routerContract = new ethers.Contract(ROUTER_ADDRESS, ABI, signer);
 
   let _tokenListUri = tokenListURI ? tokenListURI : '@sushiswap/default-token-list/build/sushiswap-default.tokenlist.json'
 
@@ -120,7 +122,7 @@ function Sushiswap({ selectedProvider, tokenListURI }) {
 
     const getPairs = async (list) => {
 
-      let listOfPromises = list.map(item => Fetcher.fetchPairData(item[0], item[1], selectedProvider))
+      let listOfPromises = list.map(item => fetchPairData(item[0], item[1], selectedProvider))
       return Promise.all(listOfPromises.map(p => p.catch(() => undefined)));
     }
 
@@ -132,7 +134,7 @@ function Sushiswap({ selectedProvider, tokenListURI }) {
       setAmountInMax()
       bestTrade = Trade.bestTradeExactIn(
       listOfPairs.filter(item => item),
-      new CurrencyAmount.fromRawAmount(tokens[tokenIn], parseUnits(amountIn.toString(), tokens[tokenIn].decimals)),
+      new TokenAmount(tokens[tokenIn], parseUnits(amountIn.toString(), tokens[tokenIn].decimals)),
       tokens[tokenOut])
       if(bestTrade[0]) {
         setAmountOut(bestTrade[0].outputAmount.toSignificant(6))
@@ -142,7 +144,7 @@ function Sushiswap({ selectedProvider, tokenListURI }) {
       bestTrade = Trade.bestTradeExactOut(
       listOfPairs.filter(item => item),
       tokens[tokenIn],
-      new CurrencyAmount.fromRawAmount(tokens[tokenOut], parseUnits(amountOut.toString(), tokens[tokenOut].decimals)))
+      new TokenAmount(tokens[tokenOut], parseUnits(amountOut.toString(), tokens[tokenOut].decimals)))
       if(bestTrade[0]) {
         setAmountIn(bestTrade[0].inputAmount.toSignificant(6))
       } else { setAmountIn() }
