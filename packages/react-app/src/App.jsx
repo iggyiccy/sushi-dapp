@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import "antd/dist/antd.css";
 import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import "./App.css";
-import { Row, Col, Button, Menu, Input, Typography, Modal, Space } from "antd";
+import { Row, Col, Button, Menu, Input, Typography } from "antd";
 import { SettingOutlined } from "@ant-design/icons";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
@@ -61,6 +61,7 @@ function App(props) {
   // eslint-disable-next-line
   const tx = Transactor(userProvider, gasPrice);
 
+  // eslint-disable-next-line
   const [showNetworkWarning, setShowNetworkWarning] = useState(false);
 
   if (window.ethereum) {
@@ -165,13 +166,6 @@ function App(props) {
             </Link>
           </Menu.Item>
         </Menu>
-        <Modal visible={showNetworkWarning} title={"Unknown network"} footer={null} closable={false}>
-          <span>{`Your wallet is not corrected to the right network, please connect to the network at ${localProviderUrlFromEnv}`}</span>
-          <Space>
-            <span>Alternatively you can disconnect your wallet.</span>
-            <Button onClick={logoutOfWeb3Modal}>Logout</Button>
-          </Space>
-        </Modal>
 
         <Switch>
           <Route exact path="/">
