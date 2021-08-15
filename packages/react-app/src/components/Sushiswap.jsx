@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Space, Row, InputNumber, Card, notification, Select, Descriptions, Typography, Button, Divider, Tooltip, Drawer, Modal } from "antd";
 import { SettingOutlined, RetweetOutlined } from '@ant-design/icons';
-import { ChainId, Token, WETH, Fetcher, Trade, TokenAmount, Percent } from '@uniswap/sdk'
+import { ChainId, Token, Trade, Percent } from '@sushiswap/sdk'
 import { parseUnits, formatUnits } from "@ethersproject/units";
 import { ethers } from "ethers";
 import { useBlockNumber, usePoller } from "eth-hooks";
-import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
+import { abi as ABI } from './ABI.json';
+// import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
+import fetchPairData from './Fetcher';
+import { TokenAmount } from './TokenAmount';
+import DEFAULT_TOKEN_LIST from '@sushiswap/default-token-list'
+import { WETH } from '@uniswap/sdk'
 
 const { Option } = Select;
 const { Text } = Typography;
 
-export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
+export const ROUTER_ADDRESS = '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
@@ -45,7 +50,7 @@ const tokenListToObject = (array) =>
      return obj
    }, {})
 
-function Swap({ selectedProvider, tokenListURI }) {
+function Sushiswap({ selectedProvider, tokenListURI }) {
 
   const [tokenIn, setTokenIn] = useState(defaultToken)
   const [tokenOut, setTokenOut] = useState(defaultTokenOut)
@@ -74,17 +79,15 @@ function Swap({ selectedProvider, tokenListURI }) {
   let blockNumber = useBlockNumber(selectedProvider, 3000)
 
   let signer = selectedProvider.getSigner()
-  let routerContract = new ethers.Contract(ROUTER_ADDRESS, IUniswapV2Router02ABI, signer);
+  let routerContract = new ethers.Contract(ROUTER_ADDRESS, ABI, signer);
 
-  let _tokenListUri = 'https://gateway.ipfs.io/ipns/tokens.uniswap.org'
+  let _tokenListUri = DEFAULT_TOKEN_LIST
 
   useEffect(() => {
     const getTokenList = async () => {
       console.log(_tokenListUri)
       try {
-      let tokenList = await fetch(_tokenListUri)
-      let tokenListJson = await tokenList.json()
-      let filteredTokens = tokenListJson.tokens.filter(function (t) {
+      let filteredTokens = _tokenListUri.tokens.filter(function (t) {
         return t.chainId === ChainId.MAINNET
       })
       let ethToken = WETH[ChainId.MAINNET]
@@ -118,7 +121,7 @@ function Swap({ selectedProvider, tokenListURI }) {
 
     const getPairs = async (list) => {
 
-      let listOfPromises = list.map(item => Fetcher.fetchPairData(item[0], item[1], selectedProvider))
+      let listOfPromises = list.map(item => fetchPairData(item[0], item[1], selectedProvider))
       return Promise.all(listOfPromises.map(p => p.catch(() => undefined)));
     }
 
@@ -155,7 +158,7 @@ function Swap({ selectedProvider, tokenListURI }) {
 
   useEffect(() => {
       getTrades()
-// eslint-disable-next-line
+  // eslint-disable-next-line
   },[tokenIn, tokenOut, amountIn, amountOut, slippageTolerance, selectedProvider])
 
   useEffect(() => {
@@ -300,7 +303,7 @@ function Swap({ selectedProvider, tokenListURI }) {
       let result = await makeCall(call, routerContract, args, metadata)
       console.log(result)
       notification.open({
-        message: 'Swap complete 🦄',
+        message: 'Swap complete 🍣',
         description:
         <><Text>{`Swapped ${tokenIn} for ${tokenOut}, transaction: `}</Text><Text copyable>{result.hash}</Text></>,
       });
@@ -377,7 +380,7 @@ function Swap({ selectedProvider, tokenListURI }) {
   )
 
   return (
-    <Card title={<Space><img src="https://ipfs.io/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg" width='40' alt='uniswapLogo'/><Typography>Uniswapper</Typography></Space>} extra={<Button type="text" onClick={() => {setSettingsVisible(true)}}><SettingOutlined /></Button>}>
+    <Card title={<Space><img src="https://raw.githubusercontent.com/sushiswap/art/master/sushi/logo-256x256.png" width='40' alt='sushiswapLogo'/><Typography>Sushiswapper</Typography></Space>} extra={<Button type="text" onClick={() => {setSettingsVisible(true)}}><SettingOutlined /></Button>}>
     <Space direction="vertical">
     <Row justify="center" align="middle">
     <Card size="small" type="inner" title={`From${exact==='out' && tokenIn && tokenOut?' (estimate)':''}`} extra={<><img src={logoIn} alt={logoIn} width='30'/><Button type="link" onClick={() => {
@@ -500,4 +503,4 @@ function Swap({ selectedProvider, tokenListURI }) {
 
 }
 
-export default Swap;
+export default Sushiswap;

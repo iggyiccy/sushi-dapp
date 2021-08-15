@@ -41,3 +41,20 @@ This branch uses a local fork of mainnet, which is easy to do with Hardhat ([see
 
 Notes:
 - This widget uses [tokenlists](https://tokenlists.org/) to import the erc20s of your choice
+
+
+Iggy's Notes: 
+
+Reference - https://azfuller20.medium.com/swap-with-uniswap-wip-f15923349b3d
+
+1. replaced package.json API key
+2. yarn add @sushiswap/sdk
+3. copy swap.jsx as sushiswap.jsx
+4. change route address to 0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F
+5. change token list to https://github.com/sushiswap/default-token-list/blob/master/tokens/mainnet.json
+6. npm i @sushiswap/default-token-list 
+7. change 'https://gateway.ipfs.io/ipns/tokens.uniswap.org' to '@sushiswap/default-token-list/build/sushiswap-default.tokenlist.json'
+8. from line 360 change everything into sushiswap logo, name, etc
+9. updated index.js link to Sushiswap function
+10. updated App.js script add-on Sushiswap 
+11. use "yarn cache clean --all" to clear old yarn files, then repeat steps above 

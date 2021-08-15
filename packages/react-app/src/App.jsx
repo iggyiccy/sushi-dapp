@@ -8,13 +8,18 @@ import { SettingOutlined } from '@ant-design/icons';
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
+// eslint-disable-next-line
 import { useExchangePrice, useGasPrice, useUserProvider, useContractLoader, useContractReader, useEventListener, useBalance, useExternalContractLoader } from "./hooks";
-import { Header, Account, Faucet, Ramp, Contract, GasGauge, Swap } from "./components";
+// eslint-disable-next-line
+import { Header, Account, Faucet, Ramp, Contract, GasGauge, Swap, Sushiswap } from "./components";
 import { Transactor } from "./helpers";
+// eslint-disable-next-line
 import { formatEther, parseEther } from "@ethersproject/units";
 //import Hints from "./Hints";
+// eslint-disable-next-line
 import { Hints } from "./views"
 
+// eslint-disable-next-line
 import { INFURA_ID, DAI_ADDRESS, DAI_ABI } from "./constants";
 const { Text, Title, Paragraph } = Typography;
 
@@ -55,6 +60,7 @@ function App(props) {
   const address = useUserAddress(userProvider);
 
   // The transactor wraps transactions and provides notificiations
+  // eslint-disable-next-line
   const tx = Transactor(userProvider, gasPrice)
 
   const [showNetworkWarning, setShowNetworkWarning] = useState(false)
@@ -69,7 +75,7 @@ function App(props) {
 
       const newInjectedNetwork = async (chainId) => {
         let localNetwork = await localProvider.getNetwork()
-        if(localNetwork.chainId == chainId) {
+        if(localNetwork.chainId === chainId) {
           setShowNetworkWarning(false)
           return true
         } else{
@@ -110,7 +116,7 @@ function App(props) {
     setRoute(window.location.pathname)
   }, [setRoute]);
 
-  const [tokenListURI, setTokenListURI] = useState('https://gateway.ipfs.io/ipns/tokens.uniswap.org')
+  const [tokenListURI, setTokenListURI] = useState('@sushiswap/default-token-list/build/sushiswap-default.tokenlist.json')
 
   let onLocalChain = localProvider && localProvider.connection && localProvider.connection.url && localProvider.connection.url.indexOf("localhost")>=0 && !process.env.REACT_APP_PROVIDER
 
@@ -124,7 +130,10 @@ function App(props) {
 
         <Menu style={{ textAlign:"center" }} selectedKeys={[route]} mode="horizontal">
           <Menu.Item key="/">
-            <Link onClick={()=>{setRoute("/")}} to="/">Swap</Link>
+            <Link onClick={()=>{setRoute("/")}} to="/">Uniswap</Link>
+          </Menu.Item>
+          <Menu.Item key="/sushiswap">
+            <Link onClick={()=>{setRoute("/sushiswap")}} to="/sushiswap">Sushiswap</Link>
           </Menu.Item>
           <Menu.Item key="/hints">
             <Link onClick={()=>{setRoute("/hints")}} to="/hints">Hints</Link>
@@ -144,17 +153,25 @@ function App(props) {
             />
           </Row>
         </Route>
+          <Route path="/sushiswap">
+            <Row justify="center">
+            <Sushiswap
+              selectedProvider={userProvider}
+              tokenListURI={tokenListURI}
+              />
+            </Row>
+          </Route>
           <Route path="/hints">
             <Title level={3}>Using the Uniswapper</Title>
-            <Paragraph><Text code>{`<Swap/>`}</Text> is a minimal Uniswap interface, requiring an <a href="https://docs.ethers.io/v5/" target="_blank">ethers.js</a> Provider.</Paragraph>
+            <Paragraph><Text code>{`<Swap/>`}</Text> is a minimal Uniswap interface, requiring an <a href="https://docs.ethers.io/v5/" target="_blank" rel="noopener noreferrer">ethers.js</a> Provider.</Paragraph>
             <Paragraph>Click the <SettingOutlined/> on the Swapper widget to view more detailed settings (slippage tolerance, time limit) and other calculations.</Paragraph>
-            {onLocalChain?<Paragraph>Add an <a href="https://alchemyapi.io/" target="_blank">Alchemy API URL</a> to the fork script at <Text code>/packages/hardhat/package.json</Text> to avoid <Text code>archive node</Text> errors</Paragraph>:null}
+            {onLocalChain?<Paragraph>Add an <a href="https://alchemyapi.io/" target="_blank" rel="noopener noreferrer">Alchemy API URL</a> to the fork script at <Text code>/packages/hardhat/package.json</Text> to avoid <Text code>archive node</Text> errors</Paragraph>:null}
             <Input placeholder="Enter tokenlist URL" value={tokenListURI} onChange={(e) => {
               console.log(e)
               setTokenListURI(e.target.value) }}
               style={{width:400}}
               />
-            <Paragraph>Enter the token list URI you would like to use (an optional parameter). Go to <a href="https://tokenlists.org/" target="_blank">tokenlists.org</a> to learn more</Paragraph>
+            <Paragraph>Enter the token list URI you would like to use (an optional parameter). Go to <a href="https://tokenlists.org/" target="_blank" rel="noopener noreferrer">tokenlists.org</a> to learn more</Paragraph>
           </Route>
         </Switch>
       </BrowserRouter>
