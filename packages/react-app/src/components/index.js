@@ -15,3 +15,4 @@ export { default as Timeline } from "./Timeline";
 export { default as GasGauge } from "./GasGauge";
 export { default as Swap } from "./Swap";
 export { default as Sushiswap } from "./Sushiswap";
+export { default as Fetcher } from "./Fetcher";
