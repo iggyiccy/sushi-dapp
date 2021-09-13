@@ -10,6 +10,9 @@ link to demo: [https://www.youtube.com/watch?v=pZa0JYb6KhI](https://www.youtube.
 
 ---
 
+# About 
+HackAfrica Hackathon - Implement Sushiswap on top of our own frontend. The decentralised application (Dapp) is builded on top of React, Ether.js, The Graph, Sushiswap and Uniswap's SDK.
+
 ## quickstart
 
 ```bash
